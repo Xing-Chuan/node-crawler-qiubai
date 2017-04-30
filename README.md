@@ -35,4 +35,4 @@ const getContent = '8hr'
 
 ## 执行界面效果图
 
-![image](![snipaste_20170430_133944.png](http://upload-images.jianshu.io/upload_images/4434201-441ebe9d16947466.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![snipaste_20170430_133944.png](http://upload-images.jianshu.io/upload_images/4434201-441ebe9d16947466.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
