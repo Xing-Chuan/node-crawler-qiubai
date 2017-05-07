@@ -5,7 +5,7 @@
 
 如果觉得这是个好玩的东西, 欢迎你的 Star , \(^o^)/
 
-使用 Promise 和一些 ES6 常用语法完成, 具体可看代码, 后面会有介绍.
+使用 Promise 和一些 ES6 常用语法完成, 具体可看代码, 后面也有介绍.
 
 ## Table of Contents
 
@@ -16,8 +16,7 @@
 - [执行界面效果图](#%E6%89%A7%E8%A1%8C%E7%95%8C%E9%9D%A2%E6%95%88%E6%9E%9C%E5%9B%BE)
 - [技术细节](#%E6%8A%80%E6%9C%AF%E7%BB%86%E8%8A%82)
     - [使用的框架](#%E4%BD%BF%E7%94%A8%E7%9A%84%E6%A1%86%E6%9E%B6)
-    - [思路](#%E6%80%9D%E8%B7%AF)
-    - [先欠更, 近期重构 README 尽量写详实细节.](#%E5%85%88%E6%AC%A0%E6%9B%B4-%E8%BF%91%E6%9C%9F%E9%87%8D%E6%9E%84-readme-%E5%B0%BD%E9%87%8F%E5%86%99%E8%AF%A6%E5%AE%9E%E7%BB%86%E8%8A%82)
+    - [实现思路](#%E5%AE%9E%E7%8E%B0%E6%80%9D%E8%B7%AF)
 
 <!-- /MarkdownTOC -->
 
@@ -33,13 +32,14 @@
 
 ## 配置
 
-项目根目录的 config.js 可配置抓取内容
+项目根目录的 `config.js` 可配置抓取内容
 
 ```js
 /**
  * [page description]
  * @type {String}
  * 设置需要抓取的页数
+ * 最多只能设置 35 页
  */
 const page = '2'
 /**
@@ -47,7 +47,6 @@ const page = '2'
  * @type {String}
  * 8hr - 8 小时热门
  * 24hr - 24 小时热门
- * 最多只能设置 35 页
  */
 const getContent = '8hr'
 ```
@@ -64,11 +63,13 @@ const getContent = '8hr'
 - axios 封装 Ajax API 的插件, Promise 写法
 - fs Nodejs 内置模块, 操作本地文件
 
-### 思路
+### 实现思路
 
-1. 分析 HTML 的结构.
+1. 分析 HTML 的结构, 提取出页面 url 与页码之间的关系.
 2. 使用 axios 获取页面 HTML 代码.
-3. 使用 cheerio 处理得到的数据, 抽取出需要的数据.
+3. 使用 cheerio 处理得到的数据, 根据第 1 步分析的规则抽取需要的数据.(这时只能单页抓取)
 4. 用 Promise 控制异步数据写入状态
+5. 每个 appendFile 都封装成 Promise 实例, 当第 1 页全部写入完毕, 执行 Promise.all(), 根据规则变更请求 url 地址.
+6. 模块化的思想, page 数值和 url 类型, 都在 `config.js` 里面配置, 使用时引入.
 
-### 先欠更, 近期重构 README 尽量写详实细节.
+
